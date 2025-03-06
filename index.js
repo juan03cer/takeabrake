@@ -53,16 +53,16 @@ async function startApolloServer() {
     // Ruta para llamar a Python (Inteligencia Artificial)
     app.post('/api/predict', async (req, res) => {
         try {
-            const response = await axios.post('http://localhost:8000/predict', { input: req.body.input });
+            const response = await axios.post(`${process.env.PYTHON_API_URL}/predict`, { input: req.body.input });
             res.json(response.data);
         } catch (error) {
             res.status(500).json({ error: 'Error llamando a la IA en Python' });
         }
     });
 
-    // Configurar puerto
+    // Configurar puerto dinámico para Render
     const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
         console.log(`🚀 Servidor REST en: http://localhost:${PORT}/`);
         console.log(`🚀 Servidor GraphQL en: http://localhost:${PORT}/graphql`);
     });
