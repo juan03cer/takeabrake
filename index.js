@@ -8,7 +8,7 @@ const typeDefs = require('./db/schema');
 const resolvers = require('./db/resolvers');
 const axios = require('axios');
 
-// Conectar MongoDB
+// Conectar  MongoDB
 conectarDB();
 
 // Inicializar Express
