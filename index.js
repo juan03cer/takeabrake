@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const router = require('./routes/usuarioRoutes'); // Asegúrate de que routes/index.js exista y lo importe correctamente
+const appRoutes = require('./routes/appRoutes')
+const usuarioRoutes = require('./routes/usuarioRoutes'); 
 const { ApolloServer } = require('apollo-server-express');
 require('dotenv').config({ path: 'variables.env' });
 const conectarDB = require('./config/db');
@@ -19,7 +20,12 @@ app.set('view engine', 'ejs');
 app.set('views', './views');
 
 app.use(express.static('public'));
-app.use(express.json()); // ¡IMPORTANTE! Para que req.body funcione correctamente
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Integrar rutas
+app.use('/', appRoutes);
+app.use('/auth',usuarioRoutes)
 
 // Middleware para autenticación con JWT
 app.use((req, res, next) => {
@@ -35,8 +41,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// Integrar rutas
-app.use('/', router);
 
 // Apollo Server para GraphQL
 const server = new ApolloServer({

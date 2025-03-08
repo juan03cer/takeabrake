@@ -1,8 +1,10 @@
 const express =require ('express');
-const { vista } = require( '../controllers/usuarioController');
+const { formularioRegistro,registrar } = require( '../controllers/usuarioController');
 
 const router = express.Router();
 
-router.get('/',vista)
+
+router.get('/registro',formularioRegistro)
+router.post('/registro',registrar)
 
 module.exports = router;

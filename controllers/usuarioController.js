@@ -1,8 +1,25 @@
-const vista = (req, res) => {
-    res.render('inicio', {
-        pagina: 'Take a Brake',
-        titulo: 'Bienvenido a Take a Brake'
-    });
-};
+const Usuario = require('../models/Usuario')
 
-module.exports = { vista };
+
+
+const formularioRegistro = (req,res) => {
+    res.render('auth/registro',{
+        pagina:'Iniciar Sesion'
+    })
+}
+const registrar = async (req,res) => {
+  const usuario = new Usuario(req.body);
+  try{
+    await usuario.save();
+    res.json({mensaje:'se agrego un nuevo cliente'})
+  }catch(error){
+    console.log(error)
+  }
+         
+}
+
+module.exports = { 
+  
+    formularioRegistro,
+    registrar
+};

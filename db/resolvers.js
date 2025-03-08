@@ -2,6 +2,7 @@ const bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const Usuario = require('../models/Usuario')
 require('dotenv').config({path: 'variables.env'})
+const {isEmail} = require('validator')
 
 
 //Crea y firma un jwt 
@@ -21,6 +22,11 @@ const resolvers= {
     Mutation:{
         crearUsuario: async (_,{input}) => {
             const {email,password} = input;
+             // Validar email en el backend
+            if (!isEmail(email) || !email.match(/@.*\.(com|mx|edu\.mx|org|net)$/)) {
+            throw new Error('Correo inválido,Ingresa uno valido');
+            }
+
             const existeUsuario = await Usuario.findOne({email});
             console.log(existeUsuario)
             //si ele usuario existee
